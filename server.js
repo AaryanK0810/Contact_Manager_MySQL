@@ -37,6 +37,10 @@ app.get("/protected" , protect , (req , res) =>{
 });
 const PORT = 5000;
 
+if(require.main === module){
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+}
+
+module.exports = app;
