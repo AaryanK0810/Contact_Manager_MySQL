@@ -48,7 +48,7 @@ router.post('/' , protect ,async(req,res) =>
             ]
         );
 
-        res.status(200).json({
+        res.status(201).json({
             message : 'Contact created successfully',
             contactId : result.insertId
         });
