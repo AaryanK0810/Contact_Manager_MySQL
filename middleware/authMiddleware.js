@@ -23,7 +23,7 @@ const protect = (req, res, next) =>{
     catch(error)
     {
         return res.status(401).json({
-            message : 'Not authorized, invalid token!'
+            message : 'Not authorized, invalid token'
         });
     }
 };
