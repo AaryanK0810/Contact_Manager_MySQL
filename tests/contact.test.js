@@ -50,6 +50,51 @@ describe('Contact routes' , ()=> {
         expect(createContactResponse.body.message).toBe('Contact created successfully');
 
         expect(createContactResponse.body.contactId).toBeDefined();
+    });
+    test('get all contacts with valid JWT', async ()=>{
+        const email = `getAllContacts${Date.now()}@example.com`
+        const password = '123456'
+
+        //Register User
+        await request(app)
+        .post('/api/users/register')
+        .send({
+            username : 'Test User',
+            email : email,
+            password : password
+        });
+
+        //Login User
+        const loginResponse = await request(app)
+        .post('/api/users/login')
+        .send({
+            email : email,
+            password : password
+        });
+
+        //Get JWT
+        const token = loginResponse.body.token;
+
+        //Create Contact
+        const createContactResponse = await request(app)
+        .post('/api/contacts')
+        .set('Authorization' , `Bearer ${token}`)
+        .send({
+            name : 'Aaryan',
+            email : 'aaryan@example.com',
+            phone : '12345667890',
+            type : 'personal'
+        });
+
+        //GET all contacts
+        const response = await request(app)
+        .get('/api/contacts')
+        .set('Authorization' , `Bearer ${token}`)
+
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBe(true);
+        expect(response.body.length).toBe(1);
+        expect(response.body[0].name).toBe("Aaryan");
     })
 afterAll(async()=>{
     await db.end();
