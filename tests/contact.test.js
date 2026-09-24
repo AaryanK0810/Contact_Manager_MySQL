@@ -367,8 +367,44 @@ describe('Contact routes' , ()=> {
                 });
 
                 expect(updateContactResponse.statusCode).toBe(404);
-                expect(updateContactResponse.body.message).toBe('Contact Not Found')
+                expect(updateContactResponse.body.message).toBe('Contact Not Found');
         });
+        test("should reject contact creation without a name", async () => {
+                const email = `validation${Date.now()}@example.com`;
+                const password = "123456";
+
+                // Register User
+                await request(app)
+                    .post("/api/users/register")
+                    .send({
+                        username: "Validation User",
+                        email: email,
+                        password: password
+                    });
+
+                // Login User
+                const loginResponse = await request(app)
+                    .post("/api/users/login")
+                    .send({
+                        email: email,
+                        password: password
+                    });
+
+                const token = loginResponse.body.token;
+
+                // Create contact without name
+                const response = await request(app)
+                    .post("/api/contacts")
+                    .set("Authorization", `Bearer ${token}`)
+                    .send({
+                        email: "test@example.com",
+                        phone: "1234567890",
+                        type: "personal"
+                    });
+
+                expect(response.statusCode).toBe(400);
+                expect(response.body.message).toBe("Name is required");
+            });
 afterAll(async()=>{
     await db.end();
 });
