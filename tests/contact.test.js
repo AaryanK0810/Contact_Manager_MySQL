@@ -262,6 +262,73 @@ describe('Contact routes' , ()=> {
             expect(contactDeleted.statusCode).toBe(404);
             expect(contactDeleted.body.message).toBe('Contact not found')
         });
+        test('should not allow other users to access a users contacts' , async ()=>{
+            //User A credentials
+            const emailA = 'userA@example.com';
+            const password = '123456';
+            //Register User A
+            await request(app)
+            .post('/api/users/register')
+            .send({
+                username : 'Test User A',
+                email : emailA,
+                password : password
+            });
+            //Login User A
+            const loginResponse = await request(app)
+            .post('/api/users/login')
+            .send({
+                email : emailA,
+                password : password
+            });
+            //Get JWT for UserA
+            const tokenA = loginResponse.body.token;
+
+            //Create contact for UserA
+            const createContactA = await request(app)
+            .post('/api/contacts')
+            .set('Authorization' , `Bearer ${tokenA}`)
+            .send({
+                name : 'Aaryan',
+            email : 'aaryan@example.com',
+            phone : '12345667890',
+            type : 'personal'
+            });
+            //Contact id for User A
+            const contactIdA = createContactA.body.contactId;
+
+            //Email for User B, password will be the same
+            const emailB = 'userB@example.com';
+            //Create USer B
+            await request(app)
+            .post('/api/users/register')
+            .send({
+                    username : 'Test User B',
+                    email : emailB,
+                    password : password
+            });
+
+            //Login User B
+            const loginUserB = await request(app)
+            .post('/api/users/login')
+            .send({
+                email : emailB,
+                password : password
+            });
+
+            //User B token
+            const tokenB = loginUserB.body.token;
+
+            //User B tries to access contacts of User A
+
+            const response = await request(app)
+            .get(`/api/contacts/${contactIdA}`)
+            .set('Authorization' , `Bearer ${tokenB}`)
+
+
+            expect(response.statusCode).toBe(404);
+            expect(response.body.message).toBe('Contact not found');
+        })
 afterAll(async()=>{
     await db.end();
 });
