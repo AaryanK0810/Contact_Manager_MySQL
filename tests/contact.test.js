@@ -369,6 +369,7 @@ describe('Contact routes' , ()=> {
                 expect(updateContactResponse.statusCode).toBe(404);
                 expect(updateContactResponse.body.message).toBe('Contact Not Found');
         });
+
         test("should reject contact creation without a name", async () => {
                 const email = `validation${Date.now()}@example.com`;
                 const password = "123456";
@@ -404,6 +405,32 @@ describe('Contact routes' , ()=> {
 
                 expect(response.statusCode).toBe(400);
                 expect(response.body.message).toBe("Name is required");
+            });
+
+        test("should reject registration with an already registered email", async () => {
+                const email = `duplicate${Date.now()}@example.com`;
+                const password = "123456";
+
+                // First registration
+                await request(app)
+                    .post("/api/users/register")
+                    .send({
+                        username: "First User",
+                        email,
+                        password
+                    });
+
+                // Second registration with same email
+                const response = await request(app)
+                    .post("/api/users/register")
+                    .send({
+                        username: "Second User",
+                        email,
+                        password
+                    });
+
+                expect(response.statusCode).toBe(409);
+                expect(response.body.message).toBe("Email already registered.");
             });
 afterAll(async()=>{
     await db.end();
