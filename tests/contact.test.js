@@ -432,6 +432,35 @@ describe('Contact routes' , ()=> {
                 expect(response.statusCode).toBe(409);
                 expect(response.body.message).toBe("Email already registered.");
             });
+
+        test("should return 404 when getting a contact that doesn't exist", async () => {
+                const email = `notfound${Date.now()}@example.com`;
+                const password = "123456";
+
+                await request(app)
+                    .post("/api/users/register")
+                    .send({
+                        username: "Not Found User",
+                        email,
+                        password
+                    });
+
+                const loginResponse = await request(app)
+                    .post("/api/users/login")
+                    .send({
+                        email,
+                        password
+                    });
+
+                const token = loginResponse.body.token;
+
+                const response = await request(app)
+                    .get("/api/contacts/999999")
+                    .set("Authorization", `Bearer ${token}`);
+
+                expect(response.statusCode).toBe(404);
+                expect(response.body.message).toBe("Contact not found");
+            });    
 afterAll(async()=>{
     await db.end();
 });
