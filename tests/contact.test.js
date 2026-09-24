@@ -264,7 +264,7 @@ describe('Contact routes' , ()=> {
         });
         test('should not allow other users to access a users contacts' , async ()=>{
             //User A credentials
-            const emailA = 'userA@example.com';
+            const emailA = `userA${Date.now()}@example.com`;
             const password = '123456';
             //Register User A
             await request(app)
@@ -298,7 +298,7 @@ describe('Contact routes' , ()=> {
             const contactIdA = createContactA.body.contactId;
 
             //Email for User B, password will be the same
-            const emailB = 'userB@example.com';
+            const emailB = `userB${Date.now()}@example.com`;
             //Create USer B
             await request(app)
             .post('/api/users/register')
@@ -328,7 +328,47 @@ describe('Contact routes' , ()=> {
 
             expect(response.statusCode).toBe(404);
             expect(response.body.message).toBe('Contact not found');
-        })
+        });
+
+        test("should return 404 when updating a contact that doesn't exist" , async ()=>{
+                const email = 'user@example.com';
+                const password = '123456';
+
+                //Register a user
+
+                await request(app)
+                .post ('/api/users/register')
+                .send({
+                    username : 'Test User',
+                    email : email,
+                    password : password
+                });
+
+                //Login the user
+                const loginResponse = await request(app)
+                .post('/api/users/login')
+                .send({
+                    email : email,
+                    password : password
+                });
+
+                //Get the JWT token
+                const token = loginResponse.body.token;
+
+                //Update a user that doesnt exist
+                const updateContactResponse = await request(app)
+                .put('/api/contacts/999')
+                .set('Authorization' , `Bearer ${token}`)
+                .send({
+                    name : 'Aaryan',
+            email : 'aaryan@example.com',
+            phone : '12345667890',
+            type : 'personal'
+                });
+
+                expect(updateContactResponse.statusCode).toBe(404);
+                expect(updateContactResponse.body.message).toBe('Contact Not Found')
+        });
 afterAll(async()=>{
     await db.end();
 });
