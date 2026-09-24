@@ -146,6 +146,122 @@ describe('Contact routes' , ()=> {
             expect(response.body.type).toBe('personal');
             
         });
+
+        test('Update Contact' , async()=> {
+            const email = `login${Date.now()}@example.com`;
+            const password = '123456';
+
+            //Register User
+            await request(app)
+            .post('/api/users/register')
+            .send({
+                username : 'Test User',
+                email : email,
+                password : password
+            });
+            //Login User
+            const loginResponse = await request(app)
+            .post('/api/users/login')
+            .send({
+                email : email,
+                password : password
+            });
+
+            //GET JWT
+            const token = loginResponse.body.token
+            //Create Contact
+            const createContact = await request(app)
+            .post('/api/contacts')
+            .set("Authorization" , `Bearer ${token}`)
+            .send({
+                name : 'Aaryan',
+            email : 'aaryan@example.com',
+            phone : '12345667890',
+            type : 'personal'
+            });
+
+            const contactId = createContact.body.contactId;
+
+            //Update contact
+            const updateContactResponse = await request(app)
+            .put(`/api/contacts/${contactId}`)
+            .set('Authorization' , `Bearer ${token}`)
+            .send({
+                name : 'Updated Aaryan',
+                email : 'updated@example.com',
+                phone : '12345667890',
+                type : 'professional'
+            });
+
+            expect(updateContactResponse.statusCode).toBe(200);
+            expect(updateContactResponse.body.message).toBe('Contact updated successfully');
+
+            //GET updated contact
+            const getUpdatedContact = await request(app)
+            .get(`/api/contacts/${contactId}`)
+            .set('Authorization' , `Bearer ${token}`)
+
+            expect(getUpdatedContact.statusCode).toBe(200);
+            expect(getUpdatedContact.body.name).toBe('Updated Aaryan');
+            expect(getUpdatedContact.body.email).toBe('updated@example.com');
+            expect(getUpdatedContact.body.phone).toBe('12345667890');
+            expect(getUpdatedContact.body.type).toBe('professional');
+
+        });
+
+        test('Delete Contact' , async()=>{
+            const email = `user${Date.now()}@example.com`;
+            const password = '123456';
+
+            //Register User
+            await request(app)
+            .post('/api/users/register')
+            .send({
+                username : 'Test User',
+                email : email,
+                password : password
+            });
+
+            //Login User
+            const loginResponse = await request(app)
+            .post('/api/users/login')
+            .send({
+                email : email,
+                password : password
+            });
+
+            //GET JWT
+            const token = loginResponse.body.token;
+
+            //Create Contact
+            const createContact = await request(app)
+            .post('/api/contacts')
+            .set('Authorization' , `Bearer ${token}`)
+            .send({name : 'Aaryan',
+            email : 'aaryan@example.com',
+            phone : '12345667890',
+            type : 'personal'
+        });
+            //get contactid
+            const contactId = createContact.body.contactId;
+
+            //delete contact
+            const deleteContact = await request(app)
+            .delete(`/api/contacts/${contactId}`)
+            .set('Authorization' , `Bearer ${token}`)
+
+            expect(deleteContact.statusCode).toBe(200);
+            expect(deleteContact.body.message).toBe('Contact deleted successfully');
+
+            //verify contact no longer exists
+            const contactDeleted = await request(app)
+            .get(`/api/contacts/${contactId}`)
+            .set('Authorization' , `Bearer ${token}`)
+
+            
+            expect(contactDeleted.statusCode).toBe(404);
+            expect(contactDeleted.body.message).toBe('Contact not found')
+        });
 afterAll(async()=>{
     await db.end();
 });

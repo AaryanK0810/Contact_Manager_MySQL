@@ -74,7 +74,7 @@ router.get("/:id" , protect , async (req ,res) =>{
 
         if(contacts.length === 0)
         {
-            return res.json({
+            return res.status(404).json({
                 message : 'Contact not found'
             });
         }
