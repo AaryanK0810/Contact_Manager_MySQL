@@ -460,7 +460,16 @@ describe('Contact routes' , ()=> {
 
                 expect(response.statusCode).toBe(404);
                 expect(response.body.message).toBe("Contact not found");
-            });    
+            });
+        
+        test('should reject access with an invalid JWT token' , async ()=>{
+            const response = await request(app)
+            .get('/api/contacts')
+            .set('Authorization' , 'Bearer invalid_token')
+
+            expect(response.statusCode).toBe(401);
+            expect(response.body.message).toBe('Not authorized, invalid token');
+        })
 afterAll(async()=>{
     await db.end();
 });
