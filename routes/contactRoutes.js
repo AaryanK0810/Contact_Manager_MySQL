@@ -9,45 +9,7 @@ const contactController = require('../controllers/contactController');
 router.get("/" , protect , contactController.getContacts);
 
 
-router.post('/' , protect ,async(req,res) =>
-{
-    try{
-        const {name , email , phone , type} = req.body;
-
-        if(!name)
-        {
-            return res.status(400).json({
-                message : 'Name is required'
-            });
-        }
-
-        const [result] = await db.query (
-            'INSERT INTO contacts (user_id , name , email , phone , type) VALUES (? , ? , ? , ? , ?)',
-            [
-                req.user.id,
-                name,
-                email,
-                phone,
-                type || 'personal'
-            ]
-        );
-
-        res.status(201).json({
-            message : 'Contact created successfully',
-            contactId : result.insertId
-        });
-    }
-
-    catch (error)
-    {
-        console.error(error);
-
-        res.status(500).json({
-            message : 'Server Error'
-        });
-        
-    }
-});
+router.post('/' , protect , contactController.createContact);
 
 router.get("/:id" , protect , async (req ,res) =>{
     try{
