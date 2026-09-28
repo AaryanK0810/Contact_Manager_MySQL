@@ -8,67 +8,6 @@ const router = express.Router();
 
 router.post("/register" , userController.register);
 
-router.post('/login' ,async (req ,res) => {
-    try {
-        const {email , password } = req.body;   
+router.post('/login' , userController.login)
 
-        if(!email || !password)
-        {
-            return res.status(400).json({
-                message : "Please provide email and password"
-            });
-        }
-
-        const [users] = await db.query(
-            "SELECT * FROM users WHERE email = ?",
-            [email]
-        );
-
-        if(users.length === 0)
-        {
-            return res.status(401).json({
-                message : "Invalid email or password"
-            });
-        }
-
-        const user = users[0];
-
-        const passwordMatch = await bcrypt.compare(
-            password,user.password
-        );
-
-        if(!passwordMatch)
-        {
-            return res.status(401).json({
-                message : "Wrong Password"
-            });
-        }
-
-
-        const token = jwt.sign(
-            {
-                id : user.id,
-                email : user.email
-            },
-            process.env.JWT_SECRET,
-            {
-                expiresIn : "1h"
-            }
-        );
-
-              res.json({
-            message : 'Login Successful',
-            token : token
-        });
-    }
-
-    catch(error)
-    {
-        console.error(error);
-        
-        res.status(500).json({
-            message : "Server error"
-        })
-    }
-})
 module.exports = router;

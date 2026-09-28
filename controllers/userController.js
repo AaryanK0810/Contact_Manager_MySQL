@@ -38,4 +38,36 @@ const register = async (req, res) => {
     }
 };
 
-module.exports = {register};
+const login = async (req , res) => {
+   try
+   {
+    const {email , password} = req.body;
+
+    const result = await userService.loginUser(
+        email,
+        password
+    );
+    res.status(200).json(result);
+   }
+   catch(error)
+   {
+    console.error(error);
+
+   if(error.message === 'MISSING_FIELDS')
+   {
+    return res.status(400).json({
+        message : 'Please provide email and password'
+    });
+   }
+   if(error.message === 'INVALID_CREDENTIALS')
+   {
+    return res.status(401).json({
+        message : 'Invalid email or password'
+    });
+   }
+   res.status(500).json({
+    message : 'Server error'
+   });
+}
+}
+module.exports = {register , login};
