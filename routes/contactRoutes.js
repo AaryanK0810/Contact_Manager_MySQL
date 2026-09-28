@@ -4,25 +4,9 @@ const protect = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.get("/" , protect , async (req,res) =>{
-    try{
-        const [contacts] = await db.query(
-            "SELECT * FROM contacts where user_id = ?",
-            [req.user.id]
-        );
+const contactController = require('../controllers/contactController');
 
-        res.json(contacts);
-    }
-    catch(error)
-    {
-        console.error(error);
-
-        res.status(500).json({
-            message : "Server error"
-        });
-        
-    }
-});
+router.get("/" , protect , contactController.getContacts);
 
 
 router.post('/' , protect ,async(req,res) =>
