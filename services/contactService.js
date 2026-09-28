@@ -74,4 +74,23 @@ const updateContact = async (contactId , userId , name , email , phone , type) =
         message : 'Contact updated successfully'
     }
 };
-module.exports = {getContacts , createContact , getContactById , updateContact};
+
+const deleteContact = async (contactId , userId) => {
+    const [contacts] = await db.query(
+        'DELETE FROM contacts WHERE id = ? AND user_id = ?',
+        [
+            contactId,
+            userId
+        ]
+    );
+
+    if(contacts.affectedRows === 0)
+    {
+        throw new Error("CONTACT_NOT_FOUND");
+    }
+
+    return {
+        message : 'Contact deleted successfully'
+    }
+}
+module.exports = {getContacts , createContact , getContactById , updateContact , deleteContact};
