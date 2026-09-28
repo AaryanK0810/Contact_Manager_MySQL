@@ -78,4 +78,40 @@ const getContactById = async (req , res) => {
         }
 };
 
-module.exports = {getContacts , createContact , getContactById}
+const updateContacts = async (req, res) => {
+    try {
+        const { name, email, phone, type } = req.body;
+        const contactId = req.params.id;
+
+        const result = await contactService.updateContact(
+            contactId,
+            req.user.id,
+            name,
+            email,
+            phone,
+            type
+        );
+
+        res.status(200).json(result);
+    }
+    catch(error) {
+        console.error(error);
+
+        if(error.message === 'NAME_REQUIRED') {
+            return res.status(400).json({
+                message: 'Name is required'
+            });
+        }
+
+        if(error.message === 'CONTACT_NOT_FOUND') {
+            return res.status(404).json({
+                message: 'Contact Not Found'
+            });
+        }
+
+        return res.status(500).json({
+            message: 'Server error'
+        });
+    }
+};
+module.exports = {getContacts , createContact , getContactById , updateContacts}

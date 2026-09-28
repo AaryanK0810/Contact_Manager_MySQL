@@ -47,4 +47,31 @@ const getContactById = async(contactId , userId) => {
 
     return contacts[0];
 }
-module.exports = {getContacts , createContact , getContactById};
+
+const updateContact = async (contactId , userId , name , email , phone , type) => {
+
+    if(!name)
+    {
+        throw new Error ('NAME_REQUIRED');
+    }
+    const [contacts] = await db.query(
+        'UPDATE contacts SET name = ? , email = ? , phone = ? , type = ? WHERE id = ? AND user_id = ?',
+        [
+            name,
+            email,
+            phone,
+            type,
+            contactId,
+            userId
+        ]
+    );
+
+    if(contacts.affectedRows === 0)
+    {
+        throw new Error ('CONTACT_NOT_FOUND');
+    }
+    return {
+        message : 'Contact updated successfully'
+    }
+};
+module.exports = {getContacts , createContact , getContactById , updateContact};
