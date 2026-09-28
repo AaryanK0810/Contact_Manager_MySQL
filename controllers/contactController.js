@@ -51,4 +51,31 @@ const createContact = async (req , res) => {
     }
 };
 
-module.exports = {getContacts , createContact}
+const getContactById = async (req , res) => {
+        try{
+            const contact = await contactService.getContactById(
+                req.params.id,
+                req.user.id
+            );
+
+            res.status(200).json(contact);
+        }
+
+        catch(error)
+        {
+            console.error(error);
+         
+            if(error.message === 'CONTACT_NOT_FOUND')
+            {
+                return res.status(404).json({
+                    message : 'Contact not found'
+                });
+            }
+            
+            return res.status(500).json({
+                message : 'Server error'
+            });
+        }
+};
+
+module.exports = {getContacts , createContact , getContactById}

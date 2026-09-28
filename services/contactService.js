@@ -30,4 +30,21 @@ return {
     contactId: result.insertId
 };
 }
-module.exports = {getContacts , createContact};
+
+const getContactById = async(contactId , userId) => {
+    const [contacts] = await db.query(
+        'SELECT * FROM contacts WHERE id = ? AND user_id = ? ',
+        [
+            contactId,
+            userId
+        ]
+    );
+
+    if(contacts.length === 0)
+    {
+        throw new Error('CONTACT_NOT_FOUND');
+    }
+
+    return contacts[0];
+}
+module.exports = {getContacts , createContact , getContactById};

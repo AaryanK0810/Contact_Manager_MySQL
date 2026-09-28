@@ -11,34 +11,7 @@ router.get("/" , protect , contactController.getContacts);
 
 router.post('/' , protect , contactController.createContact);
 
-router.get("/:id" , protect , async (req ,res) =>{
-    try{
-        const[contacts] = await db.query(
-            "SELECT * FROM contacts where id = ? AND user_id = ?",
-            [req.params.id , req.user.id]
-        );
-
-        if(contacts.length === 0)
-        {
-            return res.status(404).json({
-                message : 'Contact not found'
-            });
-        }
-
-        res.json(contacts[0]);
-    }
-
-    catch(error)
-    {
-        console.error(error);
-        
-        res.status(500).json({
-            message : 'Server error'
-        });
-    }
-
-    
-})
+router.get("/:id" , protect , contactController.getContactById);
 
 router.put('/:id' , protect , async(req , res) =>{
     try{
