@@ -23,8 +23,8 @@ loginForm.addEventListener('submit' , async(event) =>{
         const data = await response.json();
 
         const token =data.token;
-
-        console.log(token);
+        
+        // console.log(token);
         
         localStorage.setItem("token" , token);
 
@@ -38,4 +38,4 @@ loginForm.addEventListener('submit' , async(event) =>{
         message.textContent = 'Something went wrong';
         
     }
-})
+});
