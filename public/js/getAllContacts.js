@@ -30,7 +30,7 @@ getAllContacts.addEventListener("click", async () => {
             const contactElement = document.createElement("p");
 
             contactElement.textContent =
-                `ID : ${contact.id} | Name : ${contact.name} | Email : ${contact.email} | Phone : ${contact.phone}`;
+                `ID : ${contact.id} | Name : ${contact.name} | Email : ${contact.email} | Phone : ${contact.phone} | Type : ${contact.type}`;
 
             contactContainer.appendChild(contactElement);
         });
