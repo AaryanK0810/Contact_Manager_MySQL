@@ -6,6 +6,7 @@ getAllContacts.addEventListener("click", async () => {
         const token = localStorage.getItem("token");
 
         const response = await fetch("/api/contacts", {
+            method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -14,6 +15,16 @@ getAllContacts.addEventListener("click", async () => {
         const data = await response.json();
 
         contactContainer.innerHTML = "";
+
+        if (!response.ok) {
+            contactContainer.textContent = data.message;
+            return;
+        }
+
+        if (data.length === 0) {
+            contactContainer.textContent = "No contacts exist";
+            return;
+        }
 
         data.forEach(contact => {
             const contactElement = document.createElement("p");
@@ -26,5 +37,6 @@ getAllContacts.addEventListener("click", async () => {
     }
     catch (error) {
         console.log(error);
+        contactContainer.textContent = "Something went wrong";
     }
 });
