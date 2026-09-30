@@ -22,13 +22,24 @@ loginForm.addEventListener('submit' , async(event) =>{
         
         const data = await response.json();
 
-        const token =data.token;
         
         // console.log(token);
         
-        localStorage.setItem("token" , token);
+        if(response.ok)
+        {
+            const token =data.token;
+            
+            localStorage.setItem("token" , token);
 
+            message.textContent = data.message;
+
+            setTimeout(() => {
+                window.location.href = "/operations.html"
+            } , 1000);
+        }
+        else{
         message.textContent = data.message;
+        }
     }
 
     catch(error)
