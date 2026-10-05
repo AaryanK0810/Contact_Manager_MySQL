@@ -12,10 +12,12 @@
     <button id="getAllContacts">Get All Contacts</button>
     <div id = 'contactContainer'></div>
 
-    <button id="getContactById">Get Contact By ID</button>
-
-    <button id="addContact">Add Contact</button>
-    <div id="addContactForm">
+   <button id="getContactById">Get contact by ID</button>
+    <div id="getContactForm" style="display: none;">
+    <input type="number" id="contactId" placeholder="Enter contact ID">
+    <button id="submitContactId">Get Contact</button>
+    </div>
+    <div id="singleContactContainer"></div>
 
     <input type="text" id="contactName" placeholder="Name">
     <input type="email" id="contactEmail" placeholder="Email">
