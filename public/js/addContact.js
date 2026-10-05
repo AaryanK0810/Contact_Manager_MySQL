@@ -1,4 +1,4 @@
-const addContact = document.getElementById("addContact");
+const addContact = document.getElementById("addAContact");
 const addContactForm = document.getElementById("addContactForm");
 const submitContact = document.getElementById("submitContact");
 
