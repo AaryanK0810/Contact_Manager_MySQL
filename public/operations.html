@@ -27,7 +27,19 @@
     <button id="submitContact">Add Contact</button>
     </div>
 
-    <button id="updateContact">Update Contact</button>
+    <button id="updateAContact">Update a contact</button>
+
+    <div id="updateContactForm" style="display: none;">
+    <input type="number" id="updateContactId" placeholder="Contact ID">
+    <input type="text" id="updateContactName" placeholder="Name">
+    <input type="email" id="updateContactEmail" placeholder="Email">
+    <input type="text" id="updateContactPhone" placeholder="Phone">
+    <input type="text" id="updateContactType" placeholder="Type">
+    <button id="submitUpdateContact">Update Contact</button>
+    </div>
+    <div id="updateMessage"></div>
+
+
     <button id="deleteContact">Delete Contact</button>
 
 <script src="js/getAllContacts.js"></script>
