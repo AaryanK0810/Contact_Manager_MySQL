@@ -1,27 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Login</title>
+
+    <link rel="stylesheet" href="login.css">
 </head>
+
 <body>
-    <h1>Login to your existing account</h1>
 
-    <form id = 'loginForm'>
-        <label for = 'email'>Email</label>
-        <input type = 'email' id = 'email' required>
-        <br><br>
+    <main class="login-page">
 
-        <label for = 'password'>Password</label>
-        <input type = 'password' id = 'password' required>
+        <div class="login-container">
 
-        <br><br>
+            <h1>Welcome back.</h1>
 
-        <button type = 'submit'>Login</button>
-    </form>
+            <p class="login-subtitle">
+                Login to your existing account
+            </p>
 
-    <p id = 'message'></p>
-    <script src = 'js/login.js'></script>
+            <form id="loginForm">
+
+                <div class="form-field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+
+                <button type="submit">Login</button>
+
+            </form>
+
+            <p id="message"></p>
+
+        </div>
+
+    </main>
+
+    <script src="js/login.js"></script>
+
 </body>
+
 </html>

@@ -1,34 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Register - Contact Manager App</title>
+
+    <link rel="stylesheet" href="register.css">
 </head>
+
 <body>
-    <h1>Create Account</h1>
 
-    <form id = 'registerForm'>
-        <label for = 'username'>Username</label>
-        <input type = 'text' id = 'username' required>
+    <main class="register-page">
 
-        <br><br>
+        <div class="register-container">
 
-        <label for = 'email'>Email</label>
-        <input type = 'email' id = 'email' required>
+            <h1>Create account.</h1>
 
-        <br><br>
+            <p class="register-subtitle">
+                Create a new Contact Manager account
+            </p>
 
-        <label for = 'password'>Password</label>
-        <input type = 'password' id = 'password' required>
+            <form id="registerForm">
 
-        <br><br>
+                <div class="form-field">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
 
-        <button type="submit">Register</button>
+                <div class="form-field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
 
-    </form>
-    <p id = 'message'></p>
+                <div class="form-field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+
+                <button type="submit">Register</button>
+
+            </form>
+
+            <p id="message"></p>
+
+        </div>
+
+    </main>
 
     <script src="js/register.js"></script>
+
 </body>
+
 </html>
