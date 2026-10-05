@@ -89,3 +89,16 @@ button:hover {
     margin-top: 18px;
     font-size: 14px;
 }
+.home-icon {
+    position: absolute;
+    top: 25px;
+    left: 30px;
+
+    color: #25231f;
+    text-decoration: none;
+    font-size: 28px;
+}
+
+.home-icon:hover {
+    color: #a75d48;
+}
