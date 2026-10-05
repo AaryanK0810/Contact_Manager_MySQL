@@ -4,7 +4,13 @@ const submitContactId = document.getElementById("submitContactId");
 const singleContactContainer = document.getElementById("singleContactContainer");
 
 getContactById.addEventListener("click", () => {
-    getContactForm.style.display = "block";
+    if(getContactForm.style.display === 'none')
+    {
+        getContactForm.style.display = "block";
+    }
+    else{
+        getContactForm.style.display = 'none';
+    }
 });
 
 submitContactId.addEventListener("click", async () => {

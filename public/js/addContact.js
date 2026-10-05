@@ -5,7 +5,11 @@ const submitContact = document.getElementById("submitContact");
 addContactForm.style.display = "none";
 
 addContact.addEventListener("click", () => {
-    addContactForm.style.display = "block";
+    if (addContactForm.style.display === "none") {
+        addContactForm.style.display = "block";
+    } else {
+        addContactForm.style.display = "none";
+    }
 });
 
 submitContact.addEventListener("click", async () => {

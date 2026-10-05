@@ -1,7 +1,26 @@
 const getAllContacts = document.getElementById("getAllContacts");
 const contactContainer = document.getElementById("contactContainer");
 
+contactContainer.style.display = 'none';
+
+// getAllContacts.addEventListener('click' , () => {
+//     if(contactContainer.style.display === 'none')
+//     {
+//         contactContainer.style.display = 'block';
+//     }
+//     else
+//     {
+//         contactContainer.style.display = 'none';
+//     }
+// })
 getAllContacts.addEventListener("click", async () => {
+
+         if (contactContainer.style.display === "block") {
+        contactContainer.style.display = "none";
+        return;
+    }
+
+    contactContainer.style.display = "block";
     try {
         const token = localStorage.getItem("token");
 

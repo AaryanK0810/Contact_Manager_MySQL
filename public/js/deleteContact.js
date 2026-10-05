@@ -4,7 +4,14 @@ const submitDeleteContact = document.getElementById('submitDeleteContact');
 const deleteMessage = document.getElementById('deleteMessage');
 
 deleteButton.addEventListener('click' , () =>{
-    deleteContactForm.style.display = 'block';
+    if(deleteContactForm.style.display === 'none')
+    {
+        deleteContactForm.style.display = 'block';
+    }
+    else
+    {
+        deleteContactForm.style.display = 'none';
+    }
 })
 
 submitDeleteContact.addEventListener('click' , async () => 

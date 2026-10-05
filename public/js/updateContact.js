@@ -4,7 +4,15 @@ const submitUpdateContact = document.getElementById("submitUpdateContact");
 const updateMessage = document.getElementById("updateMessage");
 
 updateAContact.addEventListener("click", () => {
-    updateContactForm.style.display = "block";
+    if(updateContactForm.style.display === 'none')
+    {
+        updateContactForm.style.display = "block";
+    }
+    
+    else
+    {
+        updateContactForm.style.display = 'none';
+    }
 });
 
 submitUpdateContact.addEventListener("click", async () => {
