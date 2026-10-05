@@ -40,7 +40,14 @@
     <div id="updateMessage"></div>
 
 
-    <button id="deleteContact">Delete Contact</button>
+    <button id="deleteButton">Delete a contact</button>
+
+    <div id="deleteContactForm" style="display: none;">
+    <input type="number" id="deleteContactId" placeholder="Contact ID">
+    <button id="submitDeleteContact">Delete Contact</button>
+    </div>
+    <div id="deleteMessage"></div>
+
 
 <script src="js/getAllContacts.js"></script>
 <script src="js/getContactById.js"></script>
