@@ -1,0 +1,145 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f1eb;
+    color: #292925;
+    padding: 50px 30px;
+}
+
+/* Page heading */
+
+h1 {
+    max-width: 900px;
+    margin: 0 auto 45px;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+/* Each operation */
+
+section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 0;
+    border-top: 1px solid #c9c6bd;
+}
+
+section:last-of-type {
+    border-bottom: 1px solid #c9c6bd;
+}
+
+h2 {
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Buttons */
+
+button {
+    background: #5d6651;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+button:hover {
+    background: #464d3d;
+}
+
+/* Forms */
+
+#getContactForm,
+#addContactForm,
+#updateContactForm,
+#deleteContactForm {
+    margin-top: 18px;
+    padding: 20px;
+    border-left: 3px solid #9a9d88;
+    background: #ebe9e1;
+}
+
+input {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 12px;
+    padding: 10px 11px;
+
+    background: #faf9f5;
+    color: #292925;
+
+    border: 1px solid #bbb8af;
+    border-radius: 2px;
+
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #737963;
+}
+
+/* Contact results */
+
+#contactContainer {
+    margin-top: 20px;
+}
+
+#contactContainer p {
+    padding: 13px 0;
+    border-bottom: 1px solid #d2cfc6;
+    font-size: 14px;
+}
+
+#singleContactContainer {
+    margin-top: 18px;
+    padding: 14px;
+    background: #ebe9e1;
+    border-left: 3px solid #9a9d88;
+    font-size: 14px;
+}
+
+/* Messages */
+
+#updateMessage,
+#deleteMessage {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #5d6651;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 30px 18px;
+    }
+
+    h1 {
+        font-size: 27px;
+        margin-bottom: 30px;
+    }
+
+    section {
+        padding: 23px 0;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    input {
+        max-width: none;
+    }
+}
