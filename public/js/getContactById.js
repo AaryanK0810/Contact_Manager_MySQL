@@ -43,13 +43,52 @@ submitContactId.addEventListener("click", async () => {
         }
 
         data.forEach(contact => {
-            const contactElement = document.createElement("p");
+    const contactElement = document.createElement("div");
 
-            contactElement.textContent =
-                `ID : ${contact.id} | Name : ${contact.name} | Email : ${contact.email} | Phone : ${contact.phone} | Type : ${contact.type}`;
+    const contactInfo = document.createElement("span");
 
-            singleContactContainer.appendChild(contactElement);
+    contactInfo.textContent =
+        `ID : ${contact.id} | Name : ${contact.name} | Email : ${contact.email} | Phone : ${contact.phone} | Type : ${contact.type}`;
+
+    const deleteButton = document.createElement("button");
+
+    deleteButton.textContent = "Delete";
+    deleteButton.dataset.id = contact.id;
+
+    deleteButton.addEventListener('click' , async ()=> {
+        try {
+        const token = localStorage.getItem('token');
+        const contactId = deleteButton.dataset.id;
+
+        const response = await fetch(`/api/contacts/${contactId}` , {
+            method : 'DELETE',
+            headers : {
+            Authorization : `Bearer ${token}`
+            }
         });
+
+        const result = await response.json();
+
+        if(!response.ok)
+        {
+            alert(result.message);
+            return;
+        }
+
+        contactElement.remove();
+    }
+    catch(error)
+    {
+        console.error(error);
+        
+    }
+    })
+
+    contactElement.appendChild(contactInfo);
+    contactElement.appendChild(deleteButton);
+
+    singleContactContainer.appendChild(contactElement);
+});
 
         getContactForm.style.display = "none";
     }
