@@ -48,7 +48,7 @@ const getContactById = async(contactId , userId) => {
     return contacts[0];
 }
 
-const searchContacts = async (query , userId) => {
+const searchContact = async (query , userId) => {
     if (!query)
     {
         return [];
@@ -120,4 +120,4 @@ const deleteContact = async (contactId , userId) => {
         message : 'Contact deleted successfully'
     }
 }
-module.exports = {getContacts , createContact , getContactById , updateContact , deleteContact};
+module.exports = {getContacts , createContact , getContactById , searchContact , updateContact , deleteContact};

@@ -30,29 +30,23 @@
 
 
     <!-- Get Contact By ID -->
-    <section>
-        <h2>Find a Contact</h2>
+  <section>
+    <h2>Find a Contact</h2>
 
-        <button id="getContactById">
-            Get contact by ID
-        </button>
+    <button id="getContactById">Search contacts</button>
 
-        <div id="getContactForm" style="display: none;">
+    <div id="getContactForm" style="display: none;">
+        <input
+            type="text"
+            id="contactQuery"
+            placeholder="Enter contact ID or name"
+        >
 
-            <input
-                type="number"
-                id="contactId"
-                placeholder="Enter contact ID"
-            >
+        <button id="submitContactId">Search</button>
+    </div>
 
-            <button id="submitContactId">
-                Get Contact
-            </button>
-
-        </div>
-
-        <div id="singleContactContainer"></div>
-    </section>
+    <div id="singleContactContainer"></div>
+</section>
 
 
     <!-- Add Contact -->

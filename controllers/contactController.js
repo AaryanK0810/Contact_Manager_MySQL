@@ -78,12 +78,12 @@ const getContactById = async (req , res) => {
         }
 };
 
-const searchContacts = async (req,res) => {
+const searchContact = async (req,res) => {
     try
     {
         const {query} = req.query;
 
-        const contacts = await contactService.searchContacts(
+        const contacts = await contactService.searchContact(
             query,
             req.user.id
         );
@@ -162,4 +162,4 @@ const deleteContact = async (req , res) => {
         
     }
 };
-module.exports = {getContacts , createContact , getContactById , searchContacts , updateContacts , deleteContact}
+module.exports = {getContacts , createContact , getContactById , searchContact , updateContacts , deleteContact}

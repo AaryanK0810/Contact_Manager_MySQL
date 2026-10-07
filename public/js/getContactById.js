@@ -16,14 +16,17 @@ getContactById.addEventListener("click", () => {
 submitContactId.addEventListener("click", async () => {
     try {
         const token = localStorage.getItem("token");
-        const contactId = document.getElementById("contactId").value;
+        const contactQuery = document.getElementById("contactQuery").value;
 
-        const response = await fetch(`/api/contacts/${contactId}`, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`
+        const response = await fetch(
+            `/api/contacts/search?query=${encodeURIComponent(contactQuery)}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }
-        });
+        );
 
         const data = await response.json();
 
@@ -32,8 +35,21 @@ submitContactId.addEventListener("click", async () => {
             return;
         }
 
-        singleContactContainer.textContent =
-            `ID : ${data.id} | Name : ${data.name} | Email : ${data.email} | Phone : ${data.phone} | Type : ${data.type}`;
+        singleContactContainer.innerHTML = "";
+
+        if (data.length === 0) {
+            singleContactContainer.textContent = "No contacts found";
+            return;
+        }
+
+        data.forEach(contact => {
+            const contactElement = document.createElement("p");
+
+            contactElement.textContent =
+                `ID : ${contact.id} | Name : ${contact.name} | Email : ${contact.email} | Phone : ${contact.phone} | Type : ${contact.type}`;
+
+            singleContactContainer.appendChild(contactElement);
+        });
 
         getContactForm.style.display = "none";
     }
