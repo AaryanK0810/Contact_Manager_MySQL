@@ -78,6 +78,27 @@ const getContactById = async (req , res) => {
         }
 };
 
+const searchContacts = async (req,res) => {
+    try
+    {
+        const {query} = req.query;
+
+        const contacts = await contactService.searchContacts(
+            query,
+            req.user.id
+        );
+
+        res.status(200).json(contacts);
+    }
+    catch(error)
+    {
+        console.error(error);
+        res.status(500).json({
+            message : 'Server error'
+        });
+    }
+};
+
 const updateContacts = async (req, res) => {
     try {
         const { name, email, phone, type } = req.body;
@@ -141,4 +162,4 @@ const deleteContact = async (req , res) => {
         
     }
 };
-module.exports = {getContacts , createContact , getContactById , updateContacts , deleteContact}
+module.exports = {getContacts , createContact , getContactById , searchContacts , updateContacts , deleteContact}

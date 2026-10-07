@@ -11,6 +11,8 @@ router.get("/" , protect , contactController.getContacts);
 
 router.post('/' , protect , contactController.createContact);
 
+router.get("/search" , protect , contactController.searchContacts);
+
 router.get("/:id" , protect , contactController.getContactById);
 
 router.put('/:id' , protect , contactController.updateContacts);

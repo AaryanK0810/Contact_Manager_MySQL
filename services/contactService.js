@@ -48,6 +48,33 @@ const getContactById = async(contactId , userId) => {
     return contacts[0];
 }
 
+const searchContacts = async (query , userId) => {
+    if (!query)
+    {
+        return [];
+    }
+
+    if(!isNaN(query))
+    {
+        const [contacts] = await db.query(
+            'SELECT * FROM contacts WHERE id = ? AND user_id = ?',
+            [
+                query,
+                userId
+            ]
+        );
+        return contacts;
+    }
+    const [contacts] = await db.query(
+        'SELECT * FROM contacts WHERE name LIKE ? AND user_id = ?',
+        [
+            `${query}%`,
+            userId
+        ]
+    );
+    return contacts;
+}
+
 const updateContact = async (contactId , userId , name , email , phone , type) => {
 
     if(!name)
