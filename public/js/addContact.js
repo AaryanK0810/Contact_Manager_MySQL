@@ -21,7 +21,7 @@ submitContact.addEventListener("click", async () => {
         const phone = document.getElementById("contactPhone").value;
         const type = document.getElementById("contactType").value;
 
-        const response = await fetch("/api/contacts", {
+        const response = await authenticatedFetch("/api/contacts", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

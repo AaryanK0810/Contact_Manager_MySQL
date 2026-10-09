@@ -25,7 +25,7 @@ submitUpdateContact.addEventListener("click", async () => {
         const phone = document.getElementById("updateContactPhone").value;
         const type = document.getElementById("updateContactType").value;
 
-        const response = await fetch(`/api/contacts/${contactId}`, {
+        const response = await authenticatedFetch(`/api/contacts/${contactId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

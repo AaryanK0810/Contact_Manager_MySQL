@@ -24,7 +24,7 @@ getAllContacts.addEventListener("click", async () => {
     try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("/api/contacts", {
+        const response = await authenticatedFetch("/api/contacts", {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`

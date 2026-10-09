@@ -21,7 +21,7 @@ submitDeleteContact.addEventListener('click' , async () =>
 
         const contactId = document.getElementById('deleteContactId').value;
 
-        const response = await fetch(`api/contacts/${contactId}` , {
+        const response = await authenticatedFetch(`api/contacts/${contactId}` , {
             method : "DELETE",
             headers : {
                 Authorization : `Bearer ${token}`

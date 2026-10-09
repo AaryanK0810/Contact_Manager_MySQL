@@ -17,7 +17,7 @@ submitContactId.addEventListener("click", async () => {
         const token = localStorage.getItem("token");
         const contactQuery = document.getElementById("contactQuery").value;
 
-        const response = await fetch(
+        const response = await authenticatedFetch(
             `/api/contacts/search?query=${encodeURIComponent(contactQuery)}`,
             {
                 method: "GET",
@@ -99,7 +99,7 @@ submitContactId.addEventListener("click", async () => {
                         const type =
                             updateForm.querySelector(".search-update-type").value;
 
-                        const response = await fetch(
+                        const response = await authenticatedFetch(
                             `/api/contacts/${contact.id}`,
                             {
                                 method: "PUT",
@@ -139,7 +139,7 @@ submitContactId.addEventListener("click", async () => {
                 try {
                     const token = localStorage.getItem("token");
 
-                    const response = await fetch(
+                    const response = await authenticatedFetch(
                         `/api/contacts/${contact.id}`,
                         {
                             method: "DELETE",
