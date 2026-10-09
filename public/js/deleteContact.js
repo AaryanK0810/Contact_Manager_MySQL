@@ -1,50 +1,45 @@
-const deleteButton = document.getElementById('deleteButton');
-const deleteContactForm = document.getElementById('deleteContactForm');
-const submitDeleteContact = document.getElementById('submitDeleteContact');
-const deleteMessage = document.getElementById('deleteMessage');
+const contactContainerForDelete = document.getElementById("contactContainer");
 
-deleteButton.addEventListener('click' , () =>{
-    if(deleteContactForm.style.display === 'none')
-    {
-        deleteContactForm.style.display = 'block';
-    }
-    else
-    {
-        deleteContactForm.style.display = 'none';
-    }
-})
+if (contactContainerForDelete) {
+    contactContainerForDelete.addEventListener("click", async (event) => {
+        const button = event.target.closest(".delete-contact-btn");
+        if (!button) return;
 
-submitDeleteContact.addEventListener('click' , async () => 
-{
-    try{
-        const token = localStorage.getItem('token');
+        const contactId = button.dataset.contactId;
+        if (!contactId) return;
 
-        const contactId = document.getElementById('deleteContactId').value;
+        const row = button.closest(".contact-row");
+        const contactName = row?.querySelector(".contact-name")?.textContent || "this contact";
 
-        const response = await authenticatedFetch(`api/contacts/${contactId}` , {
-            method : "DELETE",
-            headers : {
-                Authorization : `Bearer ${token}`
-            }
-        });
-
-        const data = await response.json();
-
-        if(!response.ok)
-        {
-            deleteMessage.textContent = data.message;
+        if (!window.confirm(`Delete the contact ${contactName}?`)) {
             return;
         }
 
-        deleteMessage.textContent = data.message;
+        button.disabled = true;
+        button.textContent = "Deleting..."; 
 
-        deleteContactForm.style.display = 'none';
-    }
+        try {
+            const response = await authenticatedFetch(`/api/contacts/${contactId}`, {
+                method: "DELETE"
+            });
 
-    catch(error)
-    {
-        console.log(error);
-        deleteMessage.textContent = 'Something went wrong';
-        
-    }
-});
+            const data = await response.json();
+
+            if (!response.ok) {
+                window.alert(data.message || "Could not delete this contact.");
+                button.disabled = false;
+                button.textContent = "Delete";
+                return;
+            }
+
+            if (typeof window.loadContacts === "function") {
+                await window.loadContacts();
+            }
+        } catch (error) {
+            console.error(error);
+            window.alert("Something went wrong while deleting this contact.");
+            button.disabled = false;
+            button.textContent = "Delete";
+        }
+    });
+}

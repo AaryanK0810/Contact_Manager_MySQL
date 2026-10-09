@@ -1,180 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Contact Manager</title>
-
     <link rel="stylesheet" href="operations.css">
 </head>
-
 <body>
-     <a href="index.html" class="home-icon" aria-label="Home">
-        ⌂
-    </a>
+    <main class="page-shell">
+        <header class="page-header">
+            <a href="index.html" class="home-icon" aria-label="Home"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5.5 10v10h4.5v-6h4v6h4.5V10"/></svg><span>Home</span></a>
+            <div>
+                <h1>Contact Manager</h1>
+                <p class="page-subtitle">Keep your contacts organised in one place.</p>
+            </div>
+        </header>
 
-    <h1>Contact Manager</h1>
+        <section class="toolbar" aria-label="Contact actions">
+            <div class="toolbar-intro">
+                <h2>Contacts</h2>
+                <p>View, search, add, and manage your contacts.</p>
+            </div>
+            <div class="toolbar-actions">
+                <button id="getAllContacts" type="button" class="button button-secondary">Display all contacts</button>
+                <button id="getContactById" type="button" class="button button-secondary">Search contacts</button>
+                <button id="addAContact" type="button" class="button button-primary">+ Add contact</button>
+            </div>
+        </section>
 
-    <!-- Get All Contacts -->
-    <section>
-        <h2>All Contacts</h2>
+        <section id="getContactForm" class="panel compact-panel" style="display: none;">
+            <h3>Find a contact</h3>
+            <div class="form-inline">
+                <input type="text" id="contactQuery" placeholder="Enter contact ID or name" aria-label="Contact ID or name">
+                <button id="submitContactId" type="button" class="button button-primary">Search</button>
+            </div>
+        </section>
+        <div id="singleContactContainer" class="single-contact-container"></div>
 
-        <button id="getAllContacts">
-            Display all contacts
-        </button>
+        <section id="addContactForm" class="panel" style="display: none;">
+            <div class="panel-heading">
+                <div>
+                    <h3>Add a contact</h3>
+                    <p>Enter the details below.</p>
+                </div>
+            </div>
+            <div class="form-grid">
+                <label>Name<input type="text" id="contactName" placeholder="e.g. John Doe"></label>
+                <label>Email<input type="email" id="contactEmail" placeholder="name@example.com"></label>
+                <label>Phone<input type="text" id="contactPhone" placeholder="Phone number"></label>
+                <label>Type<input type="text" id="contactType" placeholder="Personal or Work"></label>
+            </div>
+            <button id="submitContact" type="button" class="button button-primary">Save contact</button>
+        </section>
 
-        <div id="contactContainer"></div>
-    </section>
+        <section class="contacts-section">
+            <div class="contacts-heading">
+                <div>
+                    <h2>All contacts</h2>
+                    <p class="section-subtitle">Update or remove a contact using the actions on its right.</p>
+                </div>
+            </div>
+            <div id="contactContainer" class="contact-list" style="display: none;"></div>
+        </section>
+    </main>
 
-
-    <!-- Get Contact By ID -->
-  <section>
-    <h2>Find a Contact</h2>
-
-    <button id="getContactById">Search contacts</button>
-
-    <div id="getContactForm" style="display: none;">
-        <input
-            type="text"
-            id="contactQuery"
-            placeholder="Enter contact ID or name"
-        >
-
-        <button id="submitContactId">Search</button>
-    </div>
-
-    <div id="singleContactContainer"></div>
-</section>
-
-
-    <!-- Add Contact -->
-    <section>
-        <h2>Add a Contact</h2>
-
-        <button id="addAContact">
-            Add a contact
-        </button>
-
-        <div id="addContactForm" style="display: none;">
-
-            <input
-                type="text"
-                id="contactName"
-                placeholder="Name"
-            >
-
-            <input
-                type="email"
-                id="contactEmail"
-                placeholder="Email"
-            >
-
-            <input
-                type="text"
-                id="contactPhone"
-                placeholder="Phone"
-            >
-
-            <input
-                type="text"
-                id="contactType"
-                placeholder="Type"
-            >
-
-            <button id="submitContact">
-                Add Contact
-            </button>
-
-        </div>
-    </section>
-
-
-    <!-- Update Contact -->
-    <section>
-        <h2>Update a Contact</h2>
-
-        <button id="updateAContact">
-            Update a contact
-        </button>
-
-        <div id="updateContactForm" style="display: none;">
-
-            <input
-                type="number"
-                id="updateContactId"
-                placeholder="Contact ID"
-            >
-
-            <input
-                type="text"
-                id="updateContactName"
-                placeholder="Name"
-            >
-
-            <input
-                type="email"
-                id="updateContactEmail"
-                placeholder="Email"
-            >
-
-            <input
-                type="text"
-                id="updateContactPhone"
-                placeholder="Phone"
-            >
-
-            <input
-                type="text"
-                id="updateContactType"
-                placeholder="Type"
-            >
-
-            <button id="submitUpdateContact">
-                Update Contact
-            </button>
-
-        </div>
-
-        <div id="updateMessage"></div>
-    </section>
-
-
-    <!-- Delete Contact -->
-    <section>
-        <h2>Delete a Contact</h2>
-
-        <button id="deleteButton">
-            Delete a contact
-        </button>
-
-        <div id="deleteContactForm" style="display: none;">
-
-            <input
-                type="number"
-                id="deleteContactId"
-                placeholder="Contact ID"
-            >
-
-            <button id="submitDeleteContact">
-                Delete Contact
-            </button>
-
-        </div>
-
-        <div id="deleteMessage"></div>
-    </section>
-
-
-    <!-- JavaScript -->
-     <script src = "js/auth.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/getAllContacts.js"></script>
     <script src="js/getContactById.js"></script>
     <script src="js/addContact.js"></script>
     <script src="js/updateContact.js"></script>
     <script src="js/deleteContact.js"></script>
-    
 </body>
-
 </html>

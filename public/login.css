@@ -1,13 +1,18 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+:root {
+    --bg: #eceae6;
+    --field: #fff;
+    --ink: #1f2122;
+    --muted: #686b6e;
+    --line: #cfcdc7;
+    --accent: #34495e;
 }
 
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #eee8dc;
-    color: #25231f;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
 }
 
 .login-page {
@@ -18,87 +23,78 @@ body {
     padding: 30px;
 }
 
-.login-container {
-    width: 100%;
-    max-width: 420px;
-}
+.login-container { width: 100%; max-width: 400px; }
 
 h1 {
-    font-size: 42px;
-    font-weight: 600;
-    letter-spacing: -1.5px;
-    margin-bottom: 8px;
+    font-size: 40px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 10px;
 }
 
 .login-subtitle {
-    color: #6b675f;
-    margin-bottom: 35px;
+    color: var(--muted);
+    margin-bottom: 32px;
     font-size: 15px;
 }
 
-.form-field {
-    margin-bottom: 20px;
-}
+.form-field { margin-bottom: 20px; }
 
 label {
     display: block;
     font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 7px;
+    margin-bottom: 6px;
+    color: var(--muted);
 }
 
 input {
     width: 100%;
-    padding: 13px 12px;
-
-    background: #f8f5ee;
-    color: #25231f;
-
-    border: 1px solid #bdb8ad;
+    padding: 12px;
+    background: var(--field);
+    color: var(--ink);
+    border: 1px solid var(--line);
     border-radius: 0;
-
+    font: inherit;
     font-size: 15px;
 }
 
-input:focus {
-    outline: none;
-    border-color: #25231f;
-}
+input:focus { outline: none; border-color: var(--ink); box-shadow: inset 0 -2px 0 var(--ink); }
 
 button {
     width: 100%;
+    margin-top: 8px;
     padding: 14px;
-
-    border: none;
+    border: 1px solid var(--ink);
     border-radius: 0;
-
-    background: #25231f;
-    color: #eee8dc;
-
+    background: var(--ink);
+    color: var(--bg);
+    font: inherit;
     font-size: 14px;
     cursor: pointer;
-
-    transition: background 0.2s ease;
 }
 
-button:hover {
-    background: #a75d48;
-}
+button:hover { background: var(--accent); border-color: var(--accent); }
 
-#message {
-    margin-top: 18px;
-    font-size: 14px;
-}
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+#message { margin-top: 18px; font-size: 14px; }
+
 .home-icon {
     position: absolute;
-    top: 25px;
-    left: 30px;
-
-    color: #25231f;
+    top: 24px;
+    left: 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    color: var(--muted);
     text-decoration: none;
-    font-size: 28px;
+    font-size: 13px;
 }
 
-.home-icon:hover {
-    color: #a75d48;
+.home-icon:hover { color: var(--ink); }
+
+@media (max-width: 600px) {
+    .home-icon { left: 20px; top: 16px; }
 }

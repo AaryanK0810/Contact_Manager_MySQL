@@ -12,6 +12,33 @@ getContactById.addEventListener("click", () => {
     }
 });
 
+// Builds the name / email / phone / type block for a contact
+function renderContactDetails(details, contact) {
+    details.innerHTML = "";
+
+    const name = document.createElement("h3");
+    name.className = "contact-name";
+    name.textContent = contact.name || "Unnamed contact";
+
+    const id = document.createElement("p");
+    id.className = "contact-meta";
+    id.textContent = `ID ${contact.id}`;
+
+    const email = document.createElement("p");
+    email.className = "contact-meta";
+    email.textContent = contact.email || "No email provided";
+
+    const phone = document.createElement("p");
+    phone.className = "contact-meta";
+    phone.textContent = contact.phone || "No phone provided";
+
+    const type = document.createElement("span");
+    type.className = "contact-type";
+    type.textContent = contact.type || "General";
+
+    details.append(name, id, email, phone, type);
+}
+
 submitContactId.addEventListener("click", async () => {
     try {
         const token = localStorage.getItem("token");
@@ -42,44 +69,51 @@ submitContactId.addEventListener("click", async () => {
         }
 
         data.forEach(contact => {
-            const contactElement = document.createElement("div");
+            const contactElement = document.createElement("article");
+            contactElement.className = "contact-row";
 
-            const contactInfo = document.createElement("span");
+            const contactInfo = document.createElement("div");
+            contactInfo.className = "contact-details";
+            renderContactDetails(contactInfo, contact);
 
-            contactInfo.textContent =
-                `ID : ${contact.id} | Name : ${contact.name} | Email : ${contact.email} | Phone : ${contact.phone} | Type : ${contact.type}`;
+            const actions = document.createElement("div");
+            actions.className = "contact-actions";
 
             const updateButton = document.createElement("button");
+            updateButton.type = "button";
+            updateButton.className = "button button-update";
             updateButton.textContent = "Update";
 
             const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "button button-delete";
             deleteButton.textContent = "Delete";
 
-            contactElement.appendChild(contactInfo);
-            contactElement.appendChild(updateButton);
-            contactElement.appendChild(deleteButton);
+            actions.append(updateButton, deleteButton);
 
             const updateForm = document.createElement("div");
-
-            updateForm.style.display = "none";
+            updateForm.className = "inline-update-form";
+            updateForm.hidden = true;
 
             updateForm.innerHTML = `
-                <input type="text" class="search-update-name" placeholder = 'name'>
-                <input type="email" placeholder = 'email' class="search-update-email">
-                <input type="text" placeholder = 'phone' class="search-update-phone">
-                <input type="text" placeholder = 'type' class="search-update-type">
-                <button class="save-search-update">Save Update</button>
+                <label>Name<input type="text" class="search-update-name"></label>
+                <label>Email<input type="email" class="search-update-email"></label>
+                <label>Phone<input type="text" class="search-update-phone"></label>
+                <label>Type<input type="text" class="search-update-type"></label>
+                <div class="inline-form-actions">
+                    <button type="button" class="button button-primary save-search-update">Save changes</button>
+                </div>
             `;
 
-            contactElement.appendChild(updateForm);
+            updateForm.querySelector(".search-update-name").value = contact.name || "";
+            updateForm.querySelector(".search-update-email").value = contact.email || "";
+            updateForm.querySelector(".search-update-phone").value = contact.phone || "";
+            updateForm.querySelector(".search-update-type").value = contact.type || "";
+
+            contactElement.append(contactInfo, actions, updateForm);
 
             updateButton.addEventListener("click", () => {
-                if (updateForm.style.display === "none") {
-                    updateForm.style.display = "block";
-                }
-                else {
-                    updateForm.style.display = "none";
-                }
+                updateForm.hidden = !updateForm.hidden;
             });
 
             updateForm
@@ -123,10 +157,15 @@ submitContactId.addEventListener("click", async () => {
                             return;
                         }
 
-                        contactInfo.textContent =
-                            `ID : ${contact.id} | Name : ${name} | Email : ${email} | Phone : ${phone} | Type : ${type}`;
+                        renderContactDetails(contactInfo, {
+                            id: contact.id,
+                            name,
+                            email,
+                            phone,
+                            type
+                        });
 
-                        updateForm.style.display = "none";
+                        updateForm.hidden = true;
                     }
                     catch (error) {
                         console.log(error);
