@@ -2,7 +2,7 @@ const db = require('../db');
 
 const getContacts = async (userId) => {
     const [contacts] = await db.query(
-        'SELECT * FROM contacts WHERE user_id = ?',
+        'SELECT * FROM contacts WHERE user_id = ? AND contact_status = "active"',
         [userId]
     );
     return contacts;
@@ -33,7 +33,7 @@ return {
 
 const getContactById = async(contactId , userId) => {
     const [contacts] = await db.query(
-        'SELECT * FROM contacts WHERE id = ? AND user_id = ? ',
+        'SELECT * FROM contacts WHERE id = ? AND user_id = ? AND contact_status = "active"',
         [
             contactId,
             userId
@@ -102,22 +102,36 @@ const updateContact = async (contactId , userId , name , email , phone , type) =
     }
 };
 
+// const deleteContact = async (contactId , userId) => {
+//     const [contacts] = await db.query(
+//         'DELETE FROM contacts WHERE id = ? AND user_id = ?',
+//         [
+//             contactId,
+//             userId
+//         ]
+//     );
+
+//     if(contacts.affectedRows === 0)
+//     {
+//         throw new Error("CONTACT_NOT_FOUND");
+//     }
+
+//     return {
+//         message : 'Contact deleted successfully'
+//     }
+// }
+
 const deleteContact = async (contactId , userId) => {
-    const [contacts] = await db.query(
-        'DELETE FROM contacts WHERE id = ? AND user_id = ?',
-        [
-            contactId,
-            userId
-        ]
+    const [result] = await db.query(
+        `UPDATE contacts SET contact_status = 'inactive' WHERE id = ? AND user_id = ? AND contact_status = 'active'`,
+        [contactId , userId]
     );
 
-    if(contacts.affectedRows === 0)
+    if(result.affectedRows === 0)
     {
-        throw new Error("CONTACT_NOT_FOUND");
+        throw new Error ("CONTACT_NOT_FOUND");
     }
 
-    return {
-        message : 'Contact deleted successfully'
-    }
-}
+    return "Contact deleted successfully";
+};
 module.exports = {getContacts , createContact , getContactById , searchContact , updateContact , deleteContact};
