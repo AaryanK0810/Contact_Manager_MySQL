@@ -34,7 +34,7 @@ function Register()
                     placeholder = 'example@example.com' required></input>
                 
                 <label htmlFor = 'password'>Password</label>
-                <input id = 'password' type = 'password' value={password} onChane = {(event) => setPassword(event.target.value)}
+                <input id = 'password' type = 'password' value={password} onChange = {(event) => setPassword(event.target.value)}
                 placeholder="Enter your password" required></input>
 
                 <button type="submit">Register</button>

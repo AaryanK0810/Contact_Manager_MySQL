@@ -130,3 +130,19 @@ input {
 .contact-card small {
   color: #777;
 }
+.contact-search {
+  margin-top: 24px;
+}
+
+.contact-search input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+}
+
+.contact-search input:focus {
+  outline: 2px solid #555;
+  outline-offset: 1px;
+}

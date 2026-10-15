@@ -1,9 +1,6 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate  } from "react-router-dom";
 import { apiRequest } from "../services/api";
-
-
 
 function Contacts() {
   const navigate = useNavigate();
@@ -11,6 +8,7 @@ function Contacts() {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm , setSearchTerm] = useState("");
 
   useEffect(() => {
     async function loadContacts() {
@@ -32,6 +30,9 @@ function Contacts() {
     navigate("/login", { replace: true });
   }
 
+  const filteredContacts = contacts.filter((contact) =>
+  contact.name.toLowerCase().includes(searchTerm.toLowerCase()))
+
   if (loading) {
     return <p>Loading contacts...</p>;
   }
@@ -47,22 +48,28 @@ function Contacts() {
       <h1>My Contacts</h1>
       <p>Manage your contacts in one place.</p>
 
+      <div className = 'contact-search'>
+        <input type = 'text' placeholder="Search contact by Name" value = {searchTerm} onChange = {(event) => setSearchTerm(event.target.value)}/>
+      </div>
+
       {contacts.length === 0 ? (
-        <p>No active contacts found.</p>
-      ) : (
-        <div className="contacts-list">
-          {contacts.map((contact) => (
-            <article className="contact-card" key={contact.id}>
-              <div>
-                <h2>{contact.name}</h2>
-                <p>{contact.email}</p>
-                <p>{contact.phone}</p>
-                <small>{contact.type}</small>
-              </div>
-            </article>
-          ))}
+  <p>No active contacts found.</p>
+) : filteredContacts.length === 0 ? (
+  <p>No contacts match "{searchTerm}".</p>
+) : (
+  <div className="contacts-list">
+    {filteredContacts.map((contact) => (
+      <article className="contact-card" key={contact.id}>
+        <div>
+          <h2>{contact.name}</h2>
+          <p>{contact.email}</p>
+          <p>{contact.phone}</p>
+          <small>{contact.type}</small>
         </div>
-      )}
+      </article>
+    ))}
+  </div>
+)}
     </main>
   );
 }
