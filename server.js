@@ -4,6 +4,11 @@ const userRoutes = require("./routes/userRoutes");
 const protect = require("./middleware/authMiddleware");
 const app = express();
 const contactRoutes = require("./routes/contactRoutes");
+const cors = require('cors');
+
+app.use(cors({
+    origin : 'http://localhost:5173',
+}));
 
 app.use(express.json());
 
