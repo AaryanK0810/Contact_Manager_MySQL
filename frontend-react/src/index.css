@@ -85,3 +85,48 @@ input {
   color: #292929;
   font-weight: 600;
 }
+
+.contacts-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.contacts-container h1 {
+  margin-bottom: 8px;
+}
+
+.contacts-container > p {
+  color: #666;
+}
+
+.contacts-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background: white;
+  border: 1px solid #dedede;
+  border-radius: 6px;
+}
+
+.contact-card h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.contact-card p {
+  margin: 4px 0;
+  color: #555;
+}
+
+.contact-card small {
+  color: #777;
+}

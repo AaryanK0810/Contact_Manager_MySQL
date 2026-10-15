@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import { apiRequest } from '../services/api';
-import {useNavigate , Link} from 'react';
+import {useNavigate , Link} from 'react-router-dom';
 
 function Login()
 {
