@@ -41,6 +41,31 @@ function Contacts() {
     return <p role="alert">Error: {error}</p>;
   }
 
+  async function handleDelete(contactId)
+  {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this contact?"
+    );
+
+    if(!confirmed)
+    {
+      return;
+    }
+
+    try
+    {
+      await apiRequest(`/api/contacts/${contactId}`, {
+        method : "DELETE",
+      });
+
+      setContacts((currentContacts) => currentContacts.filter((contact) => contact.id !== contactId)
+    );
+    }
+    catch(err)
+    {
+      setError(err.message);
+    }
+  }
   return (
     <main className="contacts-container">
       <button onClick={handleLogout}>Log Out</button>
@@ -65,6 +90,11 @@ function Contacts() {
           <p>{contact.email}</p>
           <p>{contact.phone}</p>
           <small>{contact.type}</small>
+        </div>
+        <div className="contact-actions">
+          <button onClick={() => handleDelete(contact.id)}>
+            Delete
+          </button>
         </div>
       </article>
     ))}
