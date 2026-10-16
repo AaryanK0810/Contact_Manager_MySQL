@@ -16,6 +16,13 @@ function Contacts() {
     phone : "" ,
     type : "personal",
   });
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [newContact, setNewContact] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    type: "personal",
+});
   
   useEffect(() => {
     async function loadContacts() {
@@ -37,8 +44,11 @@ function Contacts() {
     navigate("/login", { replace: true });
   }
 
-  const filteredContacts = contacts.filter((contact) =>
-  contact.name.toLowerCase().includes(searchTerm.toLowerCase()))
+const filteredContacts = contacts.filter((contact) =>
+  (contact.name ?? "")
+    .toLowerCase()
+    .includes(searchTerm.toLowerCase())
+);
 
   if (loading) {
     return <p>Loading contacts...</p>;
@@ -111,12 +121,98 @@ function Contacts() {
     setError(err.message);
   }
 }
+
+
+async function handleCreateContact(event) {
+  event.preventDefault();
+  setError("");
+
+  try {
+    const response = await apiRequest("/api/contacts", {
+      method: "POST",
+      body: JSON.stringify(newContact),
+    });
+
+    console.log("Create contact response:", response);
+
+    // Temporarily reload contacts from the backend.
+    // This avoids assuming the POST response shape.
+    const refreshedContacts = await apiRequest("/api/contacts");
+
+    setContacts(refreshedContacts);
+
+    setNewContact({
+      name: "",
+      email: "",
+      phone: "",
+      type: "personal",
+    });
+
+    setShowCreateForm(false);
+  } catch (err) {
+    setError(err.message);
+  }
+}
+
     return (
     <main className="contacts-container">
       <button onClick={handleLogout}>Log Out</button>
 
       <h1>My Contacts</h1>
       <p>Manage your contacts in one place.</p>
+
+      <button
+  onClick={() => setShowCreateForm((current) => !current)}
+>
+  {showCreateForm ? "Cancel" : "Add Contact"}
+</button>
+
+{showCreateForm && (
+  <form
+  className="edit-contact-form"
+  onSubmit={handleCreateContact}
+>
+    <input
+      type="text"
+      placeholder="Name"
+      value={newContact.name}
+      onChange={(event) =>
+        setNewContact({ ...newContact, name: event.target.value })
+      }
+      required
+    />
+
+    <input
+      type="email"
+      placeholder="Email"
+      value={newContact.email}
+      onChange={(event) =>
+        setNewContact({ ...newContact, email: event.target.value })
+      }
+    />
+
+    <input
+      type="tel"
+      placeholder="Phone"
+      value={newContact.phone}
+      onChange={(event) =>
+        setNewContact({ ...newContact, phone: event.target.value })
+      }
+    />
+
+    <select
+      value={newContact.type}
+      onChange={(event) =>
+        setNewContact({ ...newContact, type: event.target.value })
+      }
+    >
+      <option value="personal">Personal</option>
+      <option value="work">Work</option>
+    </select>
+
+    <button type="submit">Create Contact</button>
+  </form>
+)}
 
       <div className = 'contact-search'>
         <input type = 'text' placeholder="Search contact by Name" value = {searchTerm} onChange = {(event) => setSearchTerm(event.target.value)}/>
