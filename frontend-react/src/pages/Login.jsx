@@ -61,6 +61,8 @@ function Login()
                 <input id = 'password' type = 'password' value={password} onChange={(event) => setPassword(event.target.value)}
                 placeholder='Enter your password' required></input>'
 
+                <p className = 'auth-switch'>Don't have an account? <Link to = '/register'>Register here</Link></p>
+                
                 <button type = 'submit' disabled = {loading}>{loading ? "Logging in..." : 'Log in'}</button>
             </form>
         </main>

@@ -90,7 +90,7 @@ function Register() {
           {loading ? "Creating account..." : "Register"}
         </button>
 
-        <p>
+        <p className = 'auth-switch'>
           Already have an account? <Link to="/login">Log in</Link>
         </p>
       </form>
