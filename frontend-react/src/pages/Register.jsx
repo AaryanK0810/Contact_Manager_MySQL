@@ -1,50 +1,101 @@
+
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { apiRequest } from "../services/api";
 
-import {Link} from "react-router-dom";
+function Register() {
+  const navigate = useNavigate();
 
-function Register()
-{
-    const [username , setUsername] = useState("");
-    const [email , setEmail] = useState("");
-    const [password , setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    function handleSubmit(event)
-    {
-        event.preventDefault();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-        console.log({
-            username , 
-            email ,
-            password
-        });
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    try {
+      await apiRequest("/api/users/register", {
+        method: "POST",
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      });
+
+      setSuccess("Registration successful! Redirecting to login...");
+
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 1000);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    return (
-        <main className="auth-container">
-            <form className = 'auth-form' onSubmit={handleSubmit}>
-                <h1>Create an account</h1>
-                <p>Register to start managing your contacts.</p>
+  return (
+    <main className="auth-container">
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h1>Create an Account</h1>
+        <p>Register to start managing your contacts.</p>
 
-                <label htmlFor="username">Username</label>
-                <input id = 'username' type="text" value={username} onChange={(event) => setUsername(event.target.value)} 
-                    placeholder = 'Enter your username' required></input>
-                
-                <label htmlFor="email">Email</label>
-                <input id = 'email' type ='email' value={email} onChange = {(event) => setEmail(event.target.value)}
-                    placeholder = 'example@example.com' required></input>
-                
-                <label htmlFor = 'password'>Password</label>
-                <input id = 'password' type = 'password' value={password} onChange = {(event) => setPassword(event.target.value)}
-                placeholder="Enter your password" required></input>
+        {error && <p role="alert">{error}</p>}
 
-                <button type="submit">Register</button>
+        {success && <p role="status">{success}</p>}
 
-                <p className="auth-footer">
-                    Already have an account? <Link to = '/login'>Log in</Link>
-                </p>
-            </form>
-        </main>
-    )
+        <label htmlFor="username">Username</label>
+        <input
+          id="username"
+          type="text"
+          placeholder="Enter your username"
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+          autoComplete="username"
+          required
+        />
+
+        <label htmlFor="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          autoComplete="email"
+          required
+        />
+
+        <label htmlFor="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="Create a password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          autoComplete="new-password"
+          required
+        />
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Creating account..." : "Register"}
+        </button>
+
+        <p>
+          Already have an account? <Link to="/login">Log in</Link>
+        </p>
+      </form>
+    </main>
+  );
 }
 
 export default Register;
