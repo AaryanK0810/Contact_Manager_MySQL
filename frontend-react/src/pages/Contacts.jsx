@@ -9,7 +9,14 @@ function Contacts() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm , setSearchTerm] = useState("");
-
+  const [editingContactId , setEditingContactId] = useState(null);
+  const [editForm , setEditForm] = useState({
+    name : "" , 
+    email : "" , 
+    phone : "" ,
+    type : "personal",
+  });
+  
   useEffect(() => {
     async function loadContacts() {
       try {
@@ -66,7 +73,45 @@ function Contacts() {
       setError(err.message);
     }
   }
-  return (
+
+  function handleEditClick(contact)
+  {
+    setEditingContactId(contact.id);
+
+    setEditForm({
+      name : contact.name || "" ,
+      email : contact.email || "",
+      phone : contact.phone || "",
+      type : contact.type || "personal"
+    });
+  }
+  async function handleUpdate(event, contactId) {
+  event.preventDefault();
+  setError("");
+
+  try {
+    const updatedContact = await apiRequest(
+      `/api/contacts/${contactId}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(editForm),
+      }
+    );
+
+    setContacts((currentContacts) =>
+      currentContacts.map((contact) =>
+        contact.id === contactId
+          ? { ...contact, ...updatedContact }
+          : contact
+      )
+    );
+
+    setEditingContactId(null);
+  } catch (err) {
+    setError(err.message);
+  }
+}
+    return (
     <main className="contacts-container">
       <button onClick={handleLogout}>Log Out</button>
 
@@ -92,10 +137,65 @@ function Contacts() {
           <small>{contact.type}</small>
         </div>
         <div className="contact-actions">
+          <button onClick = {() => handleEditClick(contact)}>
+            Update
+          </button>
           <button onClick={() => handleDelete(contact.id)}>
             Delete
           </button>
         </div>
+        {editingContactId === contact.id && (
+  <form
+  className="edit-contact-form"
+  onSubmit={(event) => handleUpdate(event, contact.id)}
+>
+    <input
+      type="text"
+      placeholder="Name"
+      value={editForm.name}
+      onChange={(event) =>
+        setEditForm({ ...editForm, name: event.target.value })
+      }
+      required
+    />
+
+    <input
+      type="email"
+      placeholder="Email"
+      value={editForm.email}
+      onChange={(event) =>
+        setEditForm({ ...editForm, email: event.target.value })
+      }
+    />
+
+    <input
+      type="tel"
+      placeholder="Phone"
+      value={editForm.phone}
+      onChange={(event) =>
+        setEditForm({ ...editForm, phone: event.target.value })
+      }
+    />
+
+    <input
+      type="text"
+      placeholder="Contact type"
+      value={editForm.type}
+      onChange={(event) =>
+        setEditForm({ ...editForm, type: event.target.value })
+      }
+    />
+
+    <button type="submit">Save Changes</button>
+
+    <button
+      type="button"
+      onClick={() => setEditingContactId(null)}
+    >
+      Cancel
+    </button>
+  </form>
+)}
       </article>
     ))}
   </div>
